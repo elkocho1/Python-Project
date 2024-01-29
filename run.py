@@ -66,6 +66,50 @@ class Game:
         self.tracking_board = Board()
         self.bullets_left = 50
 
+    def place_ships(self, board, num_of_ships=8):
+        """ Place a specified number of ships randomly on the board"""
+        directions = ["left", "right", "up", "down"]
+        for i in  range(num_of_ships):
+            placed = False
+            while not placed:
+                row, col = random.randint(0, board.size - 1), random.randint(0, board.size - 1)
+                direction = random.choice(directions)
+                ship_size = random.randint(2, 4)
+                placed = self.try_to_place_ship(board, row, col, direction, ship_size)
+
+    def try_to_place_ship(self, board, row, col, direction, length):
+        """ Try to place a ship on the board in the specified direction and length"""
+        start_row, end_row = row, row  
+        start_col, end_col = col, col
+
+        if direction == "left":
+            if col - length < 0:
+                return False
+            start_col = col - length
+        elif direction == "right":
+            if col + length > board.size:
+                return False
+            end_col = col + length - 1
+        elif direction == "up":
+            if row - length < 0:
+                return False
+            start_row = row - length
+        elif direction == "down":
+            if row + length > board.size:
+                return False
+            end_row = row + length - 1
+
+        for r in range(start_row, end_row + 1):
+            for c in range(start_col, end_col + 1):
+                if board.grid[r][c] == "O":
+                    return False
+
+        ship = Ship(start_row, end_row, start_col, end_col)
+        board.place_ship(ship)
+        return True
+
+
+
     def print_game_state(self):
         print("\nPlayer Board:")
         self.player_board.print_board(hide_ships=False)
@@ -77,4 +121,6 @@ class Game:
 """ Call the game functions """
 
 game = Game()
+game.place_ships(game.player_board, num_of_ships=8)
+game.place_ships(game.tracking_board, num_of_ships=8)
 game.print_game_state()
