@@ -17,24 +17,29 @@ import random
 import time
 
 """
-Create the game for a single player 
 Source: https://github.com/SaranSundar/PythonCurriculum/blob/main/Battleships/battleships_empty.py
-This version has been modified and expanded upon by Michael Hirt for the purpose of this Project 3 - Python
+I used this version of the game as a code base. Therfore, it has been modified and expanded by Michael Hirt for the purpose of this Project 3 - Python
 """
 
-board = [[]]
-board_size = 10
-num_of_ships = 8
-shots_left = 50
-game_over = False
-num_of_ships_sunk = 0
-ship_positions = [[]]
-alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-def check_ship_placement(start_row, end_row, start_col, end_col):
-    """
-    Check if a ship can be placed in specific area. Returns True if placement is possible otherwise False
+class Ship:
+    def __init__(self, start_row, end_row, start_col, end_col):
+        """ Initializes a ship with its position and hit counts """
+        self.start_row = start_row
+        self.end_row = end_row
+        self.start_col = start_col
+        self.end_col = end_col
+        self.hits = 0
 
-    """
-    global board
-    global ship_positions
+
+class Board:
+    def __init__(self, size=10):
+        """ Initializes the game board with a given size""" 
+        self.size = size
+        self.grid = []
+        for row in range(size):
+            row_data = []
+            for col in range(size):
+                row_data.append(".")
+            self.grid.append(row_data)
+        self.ships = []
