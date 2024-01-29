@@ -43,3 +43,31 @@ class Board:
                 row_data.append(".")
             self.grid.append(row_data)
         self.ships = []
+
+    def print_board(self, hide_ships=True):
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        print(" " + " ".join(str(i) for i in range(self.size)))
+        for row in range(self.size):
+            row_display = [self.grid[row][col] if not hide_ships or self.grid[row][col] in ["X", "#"] else "." for col in range(self.size)]
+            print(alphabet[row] + " " + " ".join(row_display))
+
+
+class Game:
+    def __init__(self):
+        """ Print the current state of the game with the 2 boards"""
+        self.player_board = Board()
+        self.tracking_board = Board()
+        self.bullets_left = 50
+
+    def print_game_state(self):
+        print("\nPlayer Board:")
+        self.player_board.print_board(hide_ships=False)
+        print("\nTracking Board:")
+        self.tracking_board.print_board(hide_ships=False)
+        print(f"\nBullets left: {self.bullets_left}")
+   
+
+""" Call the game functions """
+
+game = Game()
+game.print_game_state()
