@@ -58,7 +58,14 @@ class Board:
                 self.grid[r][c] = "O"
         self.ships.append(ship)
 
-    
+    def update_grid(self, row, col, hit):
+        """ Define Hit and Missed on board""" 
+        if hit:
+            #its a hit!
+            self.grid[row][col] = "X"
+        else:
+            #its a miss!
+            self.grid[row][col] = "#"
 
     def print_board(self, hide_ships=True):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -118,6 +125,7 @@ class Game:
         return True
 
     def shoot(self, board, row, col, is_player_shooting=True):
+        """ Determin wether a shot hits a ship and update the board accordingly"""
         hit = False
         for ship in board.ships: 
             if ship.check_hit(row, col):
@@ -125,6 +133,11 @@ class Game:
                 ship.hits += 1
                 break
         
+        if is_player_shooting:
+            self.tracking_board.update_grid(row, col, hit)
+        else:
+            self.player_board.update_grid(row, col, hit)
+        return hit
         
 
     def print_game_state(self):
