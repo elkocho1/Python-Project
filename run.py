@@ -44,6 +44,13 @@ class Board:
             self.grid.append(row_data)
         self.ships = []
 
+    def place_ship(self, ship):
+        """ Place a ship on the board and mark its position""" 
+        for r in range(ship.start_row, ship.end_row + 1):
+            for c in range(ship.start_col, ship.end_col + 1):
+                self.grid[r][c] = "O"
+        self.ships.append(ship)
+
     def print_board(self, hide_ships=True):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         print(" " + " ".join(str(i) for i in range(self.size)))
