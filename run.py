@@ -31,6 +31,13 @@ class Ship:
         self.end_col = end_col
         self.hits = 0
 
+    def check_hit(self, row, col):
+        return self.start_row <= row <= self.end_row and self.start_col <= col <= self.end_col
+
+    def is_sunk(self):
+        length = (self.end_row - self.start_row + 1) * (self.end_col - self.start_col + 1)
+        return self.hits == length
+
 
 class Board:
     def __init__(self, size=10):
@@ -50,6 +57,8 @@ class Board:
             for c in range(ship.start_col, ship.end_col + 1):
                 self.grid[r][c] = "O"
         self.ships.append(ship)
+
+    
 
     def print_board(self, hide_ships=True):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -108,7 +117,15 @@ class Game:
         board.place_ship(ship)
         return True
 
-
+    def shoot(self, board, row, col, is_player_shooting=True):
+        hit = False
+        for ship in board.ships: 
+            if ship.check_hit(row, col):
+                hit = True
+                ship.hits += 1
+                break
+        
+        
 
     def print_game_state(self):
         print("\nPlayer Board:")
