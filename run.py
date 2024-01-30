@@ -188,7 +188,8 @@ class Game:
         else:
             print("Miss.")
         self.bullets_left -= 1
-   
+
+        self.enemy_turn()
 
 """ Call the game functions """
 
