@@ -141,7 +141,13 @@ class Game:
                 row, col = alphabet.index(shot[0]), int(shot[1:])
 
                 #Check if the row and column are within the board size
-                if row >= self.ene
+                if row >= self.enemy_board.size or col >self.enemy_board.size:
+                    raise ValueError("Shot out of range. Please choose within A-J and 0-9.")
+
+                return row, col
+
+            except ValueError as e:
+                print(e)
 
     def shoot(self, board, row, col, is_player_shooting=True):
         """ Determin wether a shot hits a ship and update the board accordingly"""
@@ -165,6 +171,14 @@ class Game:
         print("\nTracking Board:")
         self.tracking_board.print_board(hide_ships=False)
         print(f"\nBullets left: {self.bullets_left}")
+
+        row, col = self.get_shot_input()
+        print(f"You shoot at ({row}, {col}): ", end="")
+        if self.shoot(self.enemy_board, row, col, is_player_shooting=True):
+            print("Hit!")
+        else:
+            print("Miss.")
+        self.bullets_left -= 1
    
 
 """ Call the game functions """
