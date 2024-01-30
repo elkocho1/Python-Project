@@ -170,26 +170,42 @@ class Game:
         hit = self.shoot(self.enemy_board, row, col, is_player_shooting=False)
         print("Hit!" if hit else "Miss.") 
 
+    def is_game_over(self):
+        if self.bullets_left <= 0:
+            print("Game over. You have run out of bullets.")
+            return True
+
+        if all(ship.is_sunk() for ship in self.enemy_board.ships):
+            print("Congratulations, you have sunk all the ships!")
+            return True
+
+        if all(ship.is_sunk() for ship in self.player_board.ships):
+            print("Sorry, all your ships have been sunk. Game over!")
+            return True
+
+        return False
+
     def play(self):
         print("welcome to My Battleship Game!")
         self.place_ships(self.player_board)
         self.place_ships(self.enemy_board)
+        while not self.is_game_over():
+            print("\nYour Board:")
+            self.player_board.print_board(hide_ships=False)
+            print("\nTracking Board:")
+            self.tracking_board.print_board(hide_ships=True)
+            print(f"Bullets left: {self.bullets_left}")
 
-        print("\nPlayer Board:")
-        self.player_board.print_board(hide_ships=False)
-        print("\nTracking Board:")
-        self.tracking_board.print_board(hide_ships=False)
-        print(f"\nBullets left: {self.bullets_left}")
+            row, col = self.get_shot_input()
+            print(f"You shoot at ({row}, {col}): ", end="")
+            if self.shoot(self.enemy_board, row, col, is_player_shooting=True):
+                print("Hit!")
+            else:
+                print("Miss.")
+            self.bullets_left -= 1
 
-        row, col = self.get_shot_input()
-        print(f"You shoot at ({row}, {col}): ", end="")
-        if self.shoot(self.enemy_board, row, col, is_player_shooting=True):
-            print("Hit!")
-        else:
-            print("Miss.")
-        self.bullets_left -= 1
-
-        self.enemy_turn()
+            if not self.is_game_over():
+                self.enemy_turn()
 
 """ Call the game functions """
 
