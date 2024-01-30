@@ -170,7 +170,11 @@ class Game:
         hit = self.shoot(self.enemy_board, row, col, is_player_shooting=False)
         print("Hit!" if hit else "Miss.") 
 
-    def print_game_state(self):
+    def play(self):
+        print("welcome to My Battleship Game!")
+        self.place_ships(self.player_board)
+        self.place_ships(self.enemy_board)
+
         print("\nPlayer Board:")
         self.player_board.print_board(hide_ships=False)
         print("\nTracking Board:")
@@ -189,6 +193,4 @@ class Game:
 """ Call the game functions """
 
 game = Game()
-game.place_ships(game.player_board, num_of_ships=8)
-game.place_ships(game.tracking_board, num_of_ships=8)
-game.print_game_state()
+game.play()
