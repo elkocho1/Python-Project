@@ -79,6 +79,7 @@ class Game:
     def __init__(self):
         """ Print the current state of the game with the 2 boards"""
         self.player_board = Board()
+        self.enemy_board = Board()
         self.tracking_board = Board()
         self.bullets_left = 50
 
@@ -123,6 +124,24 @@ class Game:
         ship = Ship(start_row, end_row, start_col, end_col)
         board.place_ship(ship)
         return True
+
+    def get_shot_input(self):
+        """ Receive and validate the players shot coordinates"""
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        while True:
+            try:
+                shot = input("Enter row (A-J) and column (0-9) such as A3: ").upper()
+
+                # Check if the input lenght is correct and characters are valid
+                if len(shot) < 2 or len(shot) > 3:
+                    raise ValueError("Invalid input length. Please enter in format A3.")
+                if shot[0] not in alphabet or not shot[1:].isdigit():
+                    raise ValueError("Invalid input format. Please enter in format A3.")
+
+                row, col = alphabet.index(shot[0]), int(shot[1:])
+
+                #Check if the row and column are within the board size
+                if row >= self.ene
 
     def shoot(self, board, row, col, is_player_shooting=True):
         """ Determin wether a shot hits a ship and update the board accordingly"""
